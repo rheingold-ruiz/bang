@@ -3,964 +3,678 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeFlow | Visual Development Platform</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Aperture & Life — A Photography Blog</title>
     <style>
-        * {
+        /* ===== Reset & Base ===== */
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
+        :root {
+            --color-bg: #fafafa;
+            --color-text: #1a1a1a;
+            --color-muted: #6b6b6b;
+            --color-accent: #c97b3a;
+            --color-accent-dark: #a85e24;
+            --color-card: #ffffff;
+            --color-border: #e8e8e8;
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --radius: 12px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.06);
+            --shadow-hover: 0 8px 40px rgba(0,0,0,0.10);
+            --transition: all 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9fbfd;
+            font-family: var(--font-sans);
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
         }
-        
-        h1, h2, h3, h4 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            line-height: 1.3;
+
+        img {
+            max-width: 100%;
+            display: block;
         }
-        
-        .container {
-            width: 100%;
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ===== Navigation ===== */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(250,250,250,0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border);
+            padding: 0 40px;
+        }
+
+        .nav-inner {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header & Navigation */
-        header {
-            background-color: #fff;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-        }
-        
-        nav {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
+            height: 72px;
         }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo-icon {
-            color: #4361ee;
-            font-size: 28px;
-            margin-right: 10px;
-        }
-        
-        .logo-text {
-            font-family: 'Poppins', sans-serif;
-            font-size: 24px;
+
+        .nav-logo {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
             font-weight: 700;
-            color: #333;
+            letter-spacing: -0.02em;
         }
-        
-        .logo-text span {
-            color: #4361ee;
+
+        .nav-logo span {
+            color: var(--color-accent);
         }
-        
+
         .nav-links {
             display: flex;
+            gap: 32px;
             list-style: none;
         }
-        
-        .nav-links li {
-            margin-left: 30px;
-        }
-        
+
         .nav-links a {
-            text-decoration: none;
-            color: #555;
+            font-size: 0.9rem;
             font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        .nav-links a:hover {
-            color: #4361ee;
-        }
-        
-        .cta-button {
-            background-color: #4361ee;
-            color: white;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        
-        .cta-button:hover {
-            background-color: #3a56d4;
-            transform: translateY(-2px);
-        }
-        
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: #333;
-            cursor: pointer;
-        }
-        
-        /* Hero Section */
-        .hero {
-            padding: 150px 0 100px;
-            background: linear-gradient(135deg, #f0f4ff 0%, #f9fbfd 100%);
-        }
-        
-        .hero-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .hero-text {
-            flex: 1;
-            padding-right: 40px;
-        }
-        
-        .hero-text h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: #222;
-        }
-        
-        .hero-text h1 span {
-            color: #4361ee;
-        }
-        
-        .hero-text p {
-            font-size: 18px;
-            color: #666;
-            margin-bottom: 30px;
-            max-width: 600px;
-        }
-        
-        .hero-buttons {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .secondary-button {
-            background-color: white;
-            color: #4361ee;
-            border: 2px solid #4361ee;
-            padding: 12px 28px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .secondary-button:hover {
-            background-color: #f0f4ff;
-        }
-        
-        .hero-image {
-            flex: 1;
-            text-align: center;
-        }
-        
-        .hero-image img {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 20px 40px rgba(67, 97, 238, 0.15);
-        }
-        
-        /* Features Section */
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        .section-title h2 {
-            font-size: 36px;
-            color: #222;
-            margin-bottom: 15px;
-        }
-        
-        .section-title p {
-            color: #666;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .features {
-            padding: 100px 0;
-            background-color: white;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-        
-        .feature-card {
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .feature-icon {
-            background-color: #eef2ff;
-            color: #4361ee;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            font-size: 28px;
-        }
-        
-        .feature-card h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
-        
-        .feature-card p {
-            color: #666;
-        }
-        
-        /* Benefits Section */
-        .benefits {
-            padding: 100px 0;
-            background-color: #f0f4ff;
-        }
-        
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        
-        .benefit-item {
-            text-align: center;
-            padding: 30px 20px;
-        }
-        
-        .benefit-icon {
-            color: #4361ee;
-            font-size: 40px;
-            margin-bottom: 20px;
-        }
-        
-        .benefit-item h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
-        
-        .benefit-item p {
-            color: #666;
-        }
-        
-        /* Testimonials */
-        .testimonials {
-            padding: 100px 0;
-            background-color: white;
-        }
-        
-        .testimonial-slider {
-            max-width: 800px;
-            margin: 0 auto;
+            color: var(--color-muted);
+            transition: var(--transition);
             position: relative;
         }
-        
-        .testimonial {
-            background: #f9fbfd;
-            padding: 40px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .testimonial-text {
-            font-size: 18px;
-            font-style: italic;
-            margin-bottom: 30px;
-            color: #555;
-        }
-        
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .author-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #ddd;
-            margin-right: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #4361ee;
-            font-size: 24px;
-        }
-        
-        .author-info h4 {
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-        
-        .author-info p {
-            color: #777;
-            font-size: 14px;
-        }
-        
-        /* Pricing Section */
-        .pricing {
-            padding: 100px 0;
-            background-color: #f9fbfd;
-        }
-        
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-        
-        .pricing-card {
-            background: white;
-            border-radius: 10px;
-            padding: 40px 30px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            transition: transform 0.3s;
-        }
-        
-        .pricing-card.featured {
-            border-top: 5px solid #4361ee;
-            transform: scale(1.05);
-            position: relative;
-        }
-        
-        .featured-badge {
+
+        .nav-links a::after {
+            content: '';
             position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #4361ee;
-            color: white;
-            padding: 5px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-accent);
+            transition: var(--transition);
         }
-        
-        .pricing-card:hover {
-            transform: translateY(-10px);
+
+        .nav-links a:hover {
+            color: var(--color-text);
         }
-        
-        .pricing-card.featured:hover {
-            transform: scale(1.05) translateY(-10px);
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
-        
-        .plan-name {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        
-        .plan-price {
-            font-size: 48px;
-            font-weight: 700;
-            color: #4361ee;
-            margin-bottom: 20px;
-        }
-        
-        .plan-price span {
-            font-size: 16px;
-            color: #777;
-        }
-        
-        .plan-features {
-            list-style: none;
-            margin-bottom: 30px;
-        }
-        
-        .plan-features li {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-            color: #555;
-        }
-        
-        .plan-features li:last-child {
-            border-bottom: none;
-        }
-        
-        /* CTA Section */
-        .cta-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
-            text-align: center;
-            color: white;
-        }
-        
-        .cta-section h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-        
-        .cta-section p {
-            font-size: 18px;
-            max-width: 700px;
-            margin: 0 auto 30px;
-            opacity: 0.9;
-        }
-        
-        .cta-section .cta-button {
-            background-color: white;
-            color: #4361ee;
-            font-size: 16px;
-            padding: 15px 40px;
-        }
-        
-        .cta-section .cta-button:hover {
-            background-color: #f0f4ff;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: #222;
-            color: #ccc;
-            padding: 70px 0 20px;
-        }
-        
-        .footer-content {
+
+        /* ===== Hero ===== */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 40px 60px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-family: var(--font-serif);
+            font-size: 3.2rem;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            margin-bottom: 20px;
+        }
+
+        .hero-text h1 em {
+            color: var(--color-accent);
+            font-style: italic;
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            color: var(--color-muted);
+            margin-bottom: 32px;
+            max-width: 480px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: var(--color-text);
+            color: #fff;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: var(--transition);
+            border: 2px solid var(--color-text);
+        }
+
+        .btn:hover {
+            background: transparent;
+            color: var(--color-text);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--color-text);
+            border: 2px solid var(--color-border);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--color-text);
+            background: var(--color-text);
+            color: #fff;
+        }
+
+        .hero-image {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, #d4a574, #8b5e3c);
+        }
+
+        .hero-image::after {
+            content: '📷';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            opacity: 0.6;
+        }
+
+        /* ===== Section Commons ===== */
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 70px 40px;
+        }
+
+        .section-header {
+            text-align: center;
             margin-bottom: 50px;
         }
-        
-        .footer-column h3 {
-            font-size: 20px;
-            color: white;
-            margin-bottom: 25px;
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
+
+        .section-header h2 {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            letter-spacing: -0.02em;
             margin-bottom: 12px;
         }
-        
-        .footer-links a {
-            color: #aaa;
-            text-decoration: none;
-            transition: color 0.3s;
+
+        .section-header p {
+            color: var(--color-muted);
+            font-size: 1.05rem;
+            max-width: 520px;
+            margin: 0 auto;
         }
-        
-        .footer-links a:hover {
-            color: #4361ee;
+
+        /* ===== Gallery Grid ===== */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
-        
-        .copyright {
+
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .gallery-item .placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            opacity: 0.7;
+        }
+
+        .gallery-item:nth-child(1) { background: linear-gradient(135deg, #2d6a4f, #40916c); }
+        .gallery-item:nth-child(2) { background: linear-gradient(135deg, #9c6644, #c97b3a); }
+        .gallery-item:nth-child(3) { background: linear-gradient(135deg, #264653, #2a9d8f); }
+        .gallery-item:nth-child(4) { background: linear-gradient(135deg, #6d3035, #b23a48); }
+        .gallery-item:nth-child(5) { background: linear-gradient(135deg, #4a4e69, #7b8794); }
+        .gallery-item:nth-child(6) { background: linear-gradient(135deg, #8d99ae, #bc6c25); }
+
+        .gallery-item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: #fff;
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .overlay {
+            transform: translateY(0);
+        }
+
+        .overlay h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .overlay small {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* ===== Blog Posts ===== */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .post-card {
+            background: var(--color-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--color-border);
+        }
+
+        .post-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .post-card .thumb {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .post-card:nth-child(1) .thumb { background: linear-gradient(135deg, #a8c0a1, #5e8c61); }
+        .post-card:nth-child(2) .thumb { background: linear-gradient(135deg, #e9c46a, #f4a261); }
+        .post-card:nth-child(3) .thumb { background: linear-gradient(135deg, #7f9cf5, #5c7cfa); }
+
+        .post-card .body {
+            padding: 24px;
+        }
+
+        .post-card .meta {
+            font-size: 0.8rem;
+            color: var(--color-muted);
+            margin-bottom: 10px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .post-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.15rem;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .post-card h3 a:hover {
+            color: var(--color-accent);
+        }
+
+        .post-card .excerpt {
+            font-size: 0.9rem;
+            color: var(--color-muted);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .post-card .read-more {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-accent);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .post-card .read-more::after {
+            content: '→';
+            transition: var(--transition);
+        }
+
+        .post-card .read-more:hover::after {
+            margin-left: 4px;
+        }
+
+        /* ===== About / Quote ===== */
+        .about-section {
+            background: var(--color-text);
+            color: #fff;
+        }
+
+        .about-section .section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-img {
+            border-radius: var(--radius);
+            aspect-ratio: 3/4;
+            background: linear-gradient(160deg, #c97b3a, #6d3035);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .about-text h2 {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .about-text p {
+            color: #ccc;
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+        }
+
+        .about-text blockquote {
+            margin-top: 24px;
+            padding-left: 20px;
+            border-left: 3px solid var(--color-accent);
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 1.05rem;
+            color: #e0d0c0;
+        }
+
+        /* ===== Newsletter ===== */
+        .newsletter {
             text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid #444;
-            font-size: 14px;
-            color: #888;
+            background: linear-gradient(135deg, #f8f4ef, #efe8e0);
+            border-radius: var(--radius);
+            padding: 50px 40px;
         }
-        
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .hero-content {
-                flex-direction: column;
+
+        .newsletter h2 {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .newsletter p {
+            color: var(--color-muted);
+            margin-bottom: 24px;
+        }
+
+        .newsletter form {
+            display: flex;
+            max-width: 440px;
+            margin: 0 auto;
+            gap: 10px;
+        }
+
+        .newsletter input[type="email"] {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid var(--color-border);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .newsletter input[type="email"]:focus {
+            border-color: var(--color-accent);
+        }
+
+        .newsletter button {
+            padding: 14px 28px;
+            background: var(--color-accent);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .newsletter button:hover {
+            background: var(--color-accent-dark);
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            border-top: 1px solid var(--color-border);
+            padding: 40px;
+            text-align: center;
+            color: var(--color-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer a {
+            color: var(--color-accent);
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 50px 24px 40px;
+                gap: 36px;
             }
-            
-            .hero-text {
-                padding-right: 0;
-                margin-bottom: 50px;
+
+            .hero-text h1 {
+                font-size: 2.2rem;
+            }
+
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-section .section {
+                grid-template-columns: 1fr;
                 text-align: center;
             }
-            
-            .hero-text p {
-                margin: 0 auto 30px;
+
+            .about-img {
+                max-width: 300px;
+                margin: 0 auto;
             }
-            
-            .pricing-card.featured {
-                transform: none;
-            }
-            
-            .pricing-card.featured:hover {
-                transform: translateY(-10px);
-            }
-        }
-        
-        @media (max-width: 768px) {
+
             .nav-links {
                 display: none;
             }
-            
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            .hero-text h1 {
-                font-size: 36px;
-            }
-            
-            .section-title h2 {
-                font-size: 30px;
-            }
-            
-            .hero-buttons {
+
+            .newsletter form {
                 flex-direction: column;
-                align-items: center;
-            }
-            
-            .hero-buttons button {
-                width: 100%;
-                max-width: 300px;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .hero {
-                padding: 130px 0 80px;
-            }
-            
-            .features, .benefits, .testimonials, .pricing, .cta-section {
-                padding: 70px 0;
-            }
-            
-            .feature-card, .testimonial {
-                padding: 25px;
-            }
-            
-            .plan-price {
-                font-size: 36px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header & Navigation -->
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">
-                    <div class="logo-icon"><i class="fas fa-bezier-curve"></i></div>
-                    <div class="logo-text">Code<span>Flow</span></div>
-                </div>
-                
-                <ul class="nav-links">
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#benefits">Benefits</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#pricing">Pricing</a></li>
-                    <li><a href="#">Resources</a></li>
-                </ul>
-                
-                <button class="cta-button">Start Free Trial</button>
-                <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
-            </nav>
-        </div>
-    </header>
 
-    <!-- Hero Section -->
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">Aperture <span>&</span> Life</a>
+            <ul class="nav-links">
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#posts">Stories</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#newsletter">Subscribe</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
     <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>Build Apps Faster With <span>Visual Development</span></h1>
-                    <p>CodeFlow empowers teams to create enterprise-grade applications with minimal coding. Drag, drop, and connect components to build powerful web and mobile apps in record time.</p>
-                    <div class="hero-buttons">
-                        <button class="cta-button">Start Building Free</button>
-                        <button class="secondary-button">Watch Demo</button>
-                    </div>
+        <div class="hero-text">
+            <h1>Catching <em>light</em>, one frame at a time.</h1>
+            <p>Welcome to my little corner of the internet — where I share the stories behind my photographs, the places I wander, and the quiet moments I try to keep forever.</p>
+            <a href="#gallery" class="btn">Explore the Gallery</a>
+            <a href="#posts" class="btn btn-outline" style="margin-left: 12px;">Read Stories</a>
+        </div>
+        <div class="hero-image" aria-label="Hero photograph"></div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="section" id="gallery">
+        <div class="section-header">
+            <h2>Recent Frames</h2>
+            <p>A curated selection of moments I couldn't stop staring at. Each one tells a story in silence.</p>
+        </div>
+        <div class="gallery">
+            <div class="gallery-item">
+                <div class="placeholder">🌿</div>
+                <div class="overlay">
+                    <h4>Forest Morning</h4>
+                    <small>Shoreline, Oregon · Sony A7 IV</small>
                 </div>
-                <div class="hero-image">
-                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CodeFlow Platform Interface">
+            </div>
+            <div class="gallery-item">
+                <div class="placeholder">🏔️</div>
+                <div class="overlay">
+                    <h4>Alpine Glow</h4>
+                    <small>Chamonix, France · Fujifilm X-T5</small>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="placeholder">🌊</div>
+                <div class="overlay">
+                    <h4>Tidal Lines</h4>
+                    <small>Cornwall, UK · 35mm Film</small>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="placeholder">🏡</div>
+                <div class="overlay">
+                    <h4>Golden Hour Kitchen</h4>
+                    <small>My apartment · Canon R6</small>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="placeholder">🚶</div>
+                <div class="overlay">
+                    <h4>Weekend Wander</h4>
+                    <small>Portland Streets · Phone</small>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="placeholder">🌅</div>
+                <div class="overlay">
+                    <h4>Last Light</h4>
+                    <small>Santa Monica Pier · 1.8s Long Exposure</small>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="container">
-            <div class="section-title">
-                <h2>Powerful Features for Rapid Development</h2>
-                <p>CodeFlow provides all the tools you need to build, deploy, and scale applications without writing extensive code.</p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-th-large"></i>
+    <!-- Blog Posts -->
+    <section class="section" id="posts">
+        <div class="section-header">
+            <h2>Stories & Reflections</h2>
+            <p>Essays on the craft of seeing, travel diaries, gear thoughts, and everything in between.</p>
+        </div>
+        <div class="posts-grid">
+            <article class="post-card">
+                <div class="thumb">📖</div>
+                <div class="body">
+                    <div class="meta">
+                        <span>Mar 12, 2025</span>
+                        <span>·</span>
+                        <span>6 min read</span>
                     </div>
-                    <h3>Visual Builder</h3>
-                    <p>Drag and drop UI components to design responsive interfaces. Connect data sources with simple point-and-click actions.</p>
+                    <h3><a href="#">Why I Still Shoot Film in a Digital World</a></h3>
+                    <p class="excerpt">There's a friction to film that slows you down — and that slowness changed how I see light, composition, and patience entirely…</p>
+                    <a href="#" class="read-more">Read more</a>
                 </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-database"></i>
+            </article>
+            <article class="post-card">
+                <div class="thumb">✈️</div>
+                <div class="body">
+                    <div class="meta">
+                        <span>Feb 28, 2025</span>
+                        <span>·</span>
+                        <span>12 min read</span>
                     </div>
-                    <h3>Database Integration</h3>
-                    <p>Connect to any data source with built-in connectors. Automatically generate CRUD operations without writing SQL.</p>
+                    <h3><a href="#">Three Weeks in Japan: A Photographer's Field Notes</a></h3>
+                    <p class="excerpt">From neon-drenched alleyways in Shinjuku to the stillness of a cedar forest in Nikko — what 4,000 frames taught me…</p>
+                    <a href="#" class="read-more">Read more</a>
                 </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-mobile-alt"></i>
+            </article>
+            <article class="post-card">
+                <div class="thumb">💡</div>
+                <div class="body">
+                    <div class="meta">
+                        <span>Feb 10, 2025</span>
+                        <span>·</span>
+                        <span>5 min read</span>
                     </div>
-                    <h3>Cross-Platform</h3>
-                    <p>Build once, deploy everywhere. Generate applications for web, iOS, and Android from a single visual design.</p>
+                    <h3><a href="#">Lighting Your Living Room Like a Studio (on a Budget)</a></h3>
+                    <p class="excerpt">You don't need a $2,000 softbox. A north-facing window, a white shower curtain, and a phone flashlight can do wonders…</p>
+                    <a href="#" class="read-more">Read more</a>
                 </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3>Extensible with Code</h3>
-                    <p>Add custom functionality with JavaScript when needed. Our platform doesn't limit your creativity or complexity.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Enterprise Security</h3>
-                    <p>Built-in authentication, authorization, and data encryption. SOC2 compliant with enterprise-grade security features.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <h3>One-Click Deployment</h3>
-                    <p>Deploy to cloud or on-premises with a single click. Automatic scaling and monitoring included.</p>
-                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about-section" id="about">
+        <div class="section">
+            <div class="about-img">👤</div>
+            <div class="about-text">
+                <h2>Hi, I'm Mara.</h2>
+                <p>I'm a full-time designer who picked up a camera five years ago and never quite put it down. What started as documenting weekend hikes turned into a way of processing the world — of noticing the steam off a morning coffee, the geometry of a rain puddle, the way light bends through a window.</p>
+                <p>This blog is my visual diary. No perfection, no pressure — just honest photographs and the thoughts that come with them.</p>
+                <blockquote>"The camera is a tool for seeing. It teaches you to look before you click, and to wait for the moment that deserves to be kept."</blockquote>
             </div>
         </div>
     </section>
 
-    <!-- Benefits Section -->
-    <section class="benefits" id="benefits">
-        <div class="container">
-            <div class="section-title">
-                <h2>Why Choose CodeFlow?</h2>
-                <p>Join thousands of companies accelerating their digital transformation with low-code development.</p>
-            </div>
-            
-            <div class="benefits-grid">
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3>10x Faster Development</h3>
-                    <p>Build applications in days instead of months with visual development tools.</p>
-                </div>
-                
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <h3>Reduce Costs by 70%</h3>
-                    <p>Lower development and maintenance costs with fewer resources required.</p>
-                </div>
-                
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Citizen Developers</h3>
-                    <p>Enable business users to build solutions with minimal IT assistance.</p>
-                </div>
-                
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Scale Effortlessly</h3>
-                    <p>From prototype to enterprise-scale applications with the same platform.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <div class="section-title">
-                <h2>Trusted by Industry Leaders</h2>
-                <p>See what our customers have to say about their experience with CodeFlow.</p>
-            </div>
-            
-            <div class="testimonial-slider">
-                <div class="testimonial">
-                    <div class="testimonial-text">
-                        "CodeFlow transformed how we deliver solutions to our business units. What used to take 6 months now takes 3 weeks. Our development team can focus on complex problems while business teams build their own solutions."
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">SC</div>
-                        <div class="author-info">
-                            <h4>Sarah Chen</h4>
-                            <p>CTO, TechGrowth Inc.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section class="pricing" id="pricing">
-        <div class="container">
-            <div class="section-title">
-                <h2>Simple, Transparent Pricing</h2>
-                <p>Choose the plan that fits your needs. All plans include core features with no hidden fees.</p>
-            </div>
-            
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3 class="plan-name">Starter</h3>
-                    <div class="plan-price">$29<span>/month</span></div>
-                    <ul class="plan-features">
-                        <li>Up to 5 users</li>
-                        <li>10 GB storage</li>
-                        <li>Basic components</li>
-                        <li>Community support</li>
-                        <li>1 production app</li>
-                    </ul>
-                    <button class="secondary-button">Get Started</button>
-                </div>
-                
-                <div class="pricing-card featured">
-                    <div class="featured-badge">Most Popular</div>
-                    <h3 class="plan-name">Professional</h3>
-                    <div class="plan-price">$89<span>/month</span></div>
-                    <ul class="plan-features">
-                        <li>Up to 25 users</li>
-                        <li>100 GB storage</li>
-                        <li>All components</li>
-                        <li>Priority support</li>
-                        <li>10 production apps</li>
-                        <li>Custom branding</li>
-                    </ul>
-                    <button class="cta-button">Try Free for 14 Days</button>
-                </div>
-                
-                <div class="pricing-card">
-                    <h3 class="plan-name">Enterprise</h3>
-                    <div class="plan-price">Custom</div>
-                    <ul class="plan-features">
-                        <li>Unlimited users</li>
-                        <li>Unlimited storage</li>
-                        <li>All features included</li>
-                        <li>24/7 dedicated support</li>
-                        <li>Unlimited apps</li>
-                        <li>On-premises option</li>
-                    </ul>
-                    <button class="secondary-button">Contact Sales</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <h2>Start Building Today</h2>
-            <p>Join over 10,000 companies that use CodeFlow to accelerate their application development. No credit card required for the free trial.</p>
-            <button class="cta-button">Get Started for Free</button>
+    <!-- Newsletter -->
+    <section class="section" id="newsletter">
+        <div class="newsletter">
+            <h2>Stay in the Frame</h2>
+            <p>Get a short letter every Sunday — new photos, a small story, and one technique I'm exploring. No noise, no spam.</p>
+            <form onsubmit="event.preventDefault(); alert('Thanks for subscribing! 📸');">
+                <input type="email" placeholder="your@email.com" required>
+                <button type="submit">Subscribe</button>
+            </form>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <div class="logo">
-                        <div class="logo-icon"><i class="fas fa-bezier-curve"></i></div>
-                        <div class="logo-text">Code<span>Flow</span></div>
-                    </div>
-                    <p style="margin-top: 20px; color: #aaa;">The leading visual development platform for building enterprise applications with minimal coding.</p>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Product</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Features</a></li>
-                        <li><a href="#">Pricing</a></li>
-                        <li><a href="#">Use Cases</a></li>
-                        <li><a href="#">Integrations</a></li>
-                        <li><a href="#">Roadmap</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Resources</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">Tutorials</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Community</a></li>
-                        <li><a href="#">Support</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Company</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2023 CodeFlow. All rights reserved.</p>
-            </div>
-        </div>
+    <footer class="footer">
+        <p>&copy; 2025 Aperture &amp; Life · Made with too much coffee and a too-heavy camera bag · <a href="#">Instagram</a> · <a href="#">Unsplash</a> · <a href="#">RSS</a></p>
     </footer>
 
-    <script>
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-            
-            // Adjust for mobile
-            if (window.innerWidth <= 768) {
-                if (navLinks.style.display === 'flex') {
-                    navLinks.style.flexDirection = 'column';
-                    navLinks.style.position = 'absolute';
-                    navLinks.style.top = '80px';
-                    navLinks.style.left = '0';
-                    navLinks.style.width = '100%';
-                    navLinks.style.backgroundColor = 'white';
-                    navLinks.style.padding = '20px';
-                    navLinks.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
-                    
-                    const navItems = document.querySelectorAll('.nav-links li');
-                    navItems.forEach(item => {
-                        item.style.margin = '10px 0';
-                    });
-                }
-            }
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu if open
-                    if(window.innerWidth <= 768) {
-                        document.querySelector('.nav-links').style.display = 'none';
-                    }
-                }
-            });
-        });
-        
-        // Simple testimonial slider
-        const testimonials = [
-            {
-                text: "CodeFlow transformed how we deliver solutions to our business units. What used to take 6 months now takes 3 weeks. Our development team can focus on complex problems while business teams build their own solutions.",
-                name: "Sarah Chen",
-                position: "CTO, TechGrowth Inc.",
-                initials: "SC"
-            },
-            {
-                text: "We reduced our app development time by 80% using CodeFlow. The visual interface made it easy for our analysts to build data dashboards without waiting for IT resources.",
-                name: "Marcus Johnson",
-                position: "Director of Operations, DataCorp",
-                initials: "MJ"
-            },
-            {
-                text: "As a non-technical founder, CodeFlow allowed me to build our MVP in just 2 months. I could test ideas quickly and iterate based on user feedback without deep coding knowledge.",
-                name: "Lisa Wang",
-                position: "Founder, StartupLabs",
-                initials: "LW"
-            }
-        ];
-        
-        let currentTestimonial = 0;
-        const testimonialElement = document.querySelector('.testimonial');
-        
-        function rotateTestimonial() {
-            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
-            updateTestimonial();
-        }
-        
-        function updateTestimonial() {
-            const testimonial = testimonials[currentTestimonial];
-            testimonialElement.innerHTML = `
-                <div class="testimonial-text">"${testimonial.text}"</div>
-                <div class="testimonial-author">
-                    <div class="author-avatar">${testimonial.initials}</div>
-                    <div class="author-info">
-                        <h4>${testimonial.name}</h4>
-                        <p>${testimonial.position}</p>
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Auto-rotate testimonials every 5 seconds
-        setInterval(rotateTestimonial, 5000);
-        
-        // CTA button interactions
-        document.querySelectorAll('.cta-button').forEach(button => {
-            button.addEventListener('click', function() {
-                alert('Thank you for your interest in CodeFlow! You would be redirected to the signup page in a real implementation.');
-            });
-        });
-        
-        // Pricing card interactions
-        document.querySelectorAll('.pricing-card button').forEach(button => {
-            button.addEventListener('click', function() {
-                const planName = this.closest('.pricing-card').querySelector('.plan-name').textContent;
-                alert(`You selected the ${planName} plan. In a real implementation, you would be redirected to the checkout process.`);
-            });
-        });
-    </script>
 </body>
 </html>
